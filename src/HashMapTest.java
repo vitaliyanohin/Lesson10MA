@@ -2,13 +2,13 @@ import java.util.Arrays;
 
 public class HashMapTest<T, K> {
 
-  private int currentCapacity;
-  private int size;
+  private static final float DEFAULT_LOAD_FACTOR = 0.75f;
+  private static final int DEFAULT_CAPACITY = 16;
   private Node<T, K>[] arrayOfHashMapTest;
   private Node<T, K> currentNode;
   private Node<T, K> nodeBuffer;
-  private static final float DEFAULT_LOAD_FACTOR = 0.75f;
-  private static final int DEFAULT_CAPACITY = 16;
+  private int currentCapacity;
+  private int size;
 
   public void put(T key, K value) {
     if (isEmpty()) {
