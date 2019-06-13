@@ -18,7 +18,7 @@ public class HashMapTest<T, K> {
       arrayIncrease();
     }
     currentNode = new Node<>(key, value);
-    int index = (currentNode.hashKey() % (currentCapacity));
+    int index = (currentNode.hashKey() % currentCapacity);
     if (arrayOfHashMapTest[index] == null) {
       arrayOfHashMapTest[index] = currentNode;
       size++;
@@ -63,7 +63,6 @@ public class HashMapTest<T, K> {
       for (int i = 0; i < DEFAULT_CAPACITY; i++) {
         arrayOfHashMapTest[i] = null;
       }
-      size = 0;
     }
   }
 
