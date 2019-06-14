@@ -1,8 +1,8 @@
 public class Application {
   public static void main(String[] args) {
     testFiveHundredKeys();
-//    testBasic();
-   // testCollision();
+    testBasic();
+    testCollision();
     System.out.println("Line for Breakpoint");
   }
 
