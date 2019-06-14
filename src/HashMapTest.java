@@ -27,7 +27,8 @@ public class HashMapTest<T, K> {
       if (currentNode.getKey().equals(values[index].getKey())) {
         values[index].setValue(currentNode.getValue());
       } else {
-      values[index].setNextNode(currentNode); }
+        values[index].setNextNode(currentNode);
+      }
     } else {
       nodeBuffer = values[index].getNextNode();
       while (nodeBuffer != null) {
@@ -43,7 +44,6 @@ public class HashMapTest<T, K> {
       }
     }
   }
-
 
   public K get(T key) {
     int index = key.hashCode() % currentCapacity;
