@@ -1,10 +1,11 @@
 import java.util.Arrays;
+import java.util.NoSuchElementException;
 
 public class HashMapTest<T, K> {
 
   private static final float DEFAULT_LOAD_FACTOR = 0.75f;
   private static final int DEFAULT_CAPACITY = 16;
-  private Node<T, K>[] arrayOfHashMapTest;
+  private Node<T, K>[] values;
   private Node<T, K> currentNode;
   private Node<T, K> nodeBuffer;
   private int currentCapacity;
@@ -19,32 +20,44 @@ public class HashMapTest<T, K> {
     }
     currentNode = new Node<>(key, value);
     int index = (currentNode.hashKey() % currentCapacity);
-    if (arrayOfHashMapTest[index] == null) {
-      arrayOfHashMapTest[index] = currentNode;
+    if (values[index] == null) {
+      values[index] = currentNode;
       size++;
-    } else if (!currentNode.getKey().equals(arrayOfHashMapTest[index].getKey())) {
-      if (arrayOfHashMapTest[index].getNextNode() == null) {
-        arrayOfHashMapTest[index].setNextNode(currentNode);
+    } else if (values[index].getNextNode() == null || currentNode.getKey().equals(values[index].getKey())) {
+      if (currentNode.getKey().equals(values[index].getKey())) {
+        values[index].setValue(currentNode.getValue());
       } else {
-        nodeBuffer = arrayOfHashMapTest[index].getNextNode();
-        nodeBuffer.setNextNode(currentNode);
-        nodeBuffer = null;
+      values[index].setNextNode(currentNode); }
+    } else {
+      nodeBuffer = values[index].getNextNode();
+      while (nodeBuffer != null) {
+        if (currentNode.getKey().equals(nodeBuffer.getKey())) {
+          nodeBuffer.setValue(currentNode.getValue());
+          return;
+        }
+        if (nodeBuffer.getNextNode() == null) {
+          nodeBuffer.setNextNode(currentNode);
+          return;
+        }
+        nodeBuffer = nodeBuffer.getNextNode();
       }
     }
   }
 
+
   public K get(T key) {
     int index = key.hashCode() % currentCapacity;
-    if (arrayOfHashMapTest[index].getKey().equals(key)) {
-      return arrayOfHashMapTest[index].getValue();
+    if (values[index].getKey().equals(key)) {
+      return values[index].getValue();
     } else {
-      currentNode = arrayOfHashMapTest[index].getNextNode();
-      while (true) {
+      currentNode = values[index].getNextNode();
+      while (currentNode != null) {
         if (key.equals(currentNode.getKey())) {
           return currentNode.getValue();
         }
         currentNode = currentNode.getNextNode();
       }
+      throw new NoSuchElementException();
     }
   }
 
@@ -58,22 +71,22 @@ public class HashMapTest<T, K> {
 
   private void arrayInitialization() {
     if (currentCapacity == 0) {
-      arrayOfHashMapTest = new Node[DEFAULT_CAPACITY];
+      values = new Node[DEFAULT_CAPACITY];
       currentCapacity = DEFAULT_CAPACITY;
       for (int i = 0; i < DEFAULT_CAPACITY; i++) {
-        arrayOfHashMapTest[i] = null;
+        values[i] = null;
       }
     }
   }
 
   private void arrayIncrease() {
-    Node<T, K>[] tempArray = Arrays.copyOf(arrayOfHashMapTest, currentCapacity);
+    Node<T, K>[] tempArray = Arrays.copyOf(values, currentCapacity);
     for (int i = 0; i < currentCapacity; i++) {
-      arrayOfHashMapTest[i] = null;
+      values[i] = null;
     }
     int oldCapacity = currentCapacity;
     currentCapacity = currentCapacity << 1;
-    arrayOfHashMapTest = Arrays.copyOf(arrayOfHashMapTest, currentCapacity);
+    values = Arrays.copyOf(values, currentCapacity);
     size = 0;
     for (int i = 0; i < oldCapacity; i++) {
       if (tempArray[i] == null) {
@@ -84,7 +97,7 @@ public class HashMapTest<T, K> {
         put(tempArray[i].getKey(), tempArray[i].getValue());
         while (nodeBuffer != null) {
           put(nodeBuffer.getKey(), nodeBuffer.getValue());
-          currentNode = currentNode.getNextNode();
+          nodeBuffer = nodeBuffer.getNextNode();
         }
       } else {
         put(tempArray[i].getKey(), tempArray[i].getValue());
@@ -120,6 +133,10 @@ public class HashMapTest<T, K> {
 
     public K getValue() {
       return value;
+    }
+
+    public void setValue(K value) {
+      this.value = value;
     }
 
     @Override

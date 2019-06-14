@@ -1,33 +1,43 @@
 public class Application {
   public static void main(String[] args) {
-//    test500Key();
+    testFiveHundredKeys();
 //    testBasic();
-    testCollision();
+   // testCollision();
     System.out.println("Line for Breakpoint");
   }
 
- private static void test500Key() {
-    HashMapTest<Integer, Integer> mapTest = new HashMapTest<>();
+ private static void testFiveHundredKeys() {
+    HashMapTest<String, Integer> mapTest = new HashMapTest<>();
     for (int i = 0; i < 501; i++) {
-      mapTest.put(i, i);
+      mapTest.put(String.valueOf(i), i);
     }
     for (int k = 0; k < 501; k++) {
-      System.out.println(mapTest.get(k));
+      System.out.println(mapTest.get(String.valueOf(k)));
     }
+   System.out.println("Line for Breakpoint");
   }
 
   private static void testCollision() {
     HashMapTest<String, Integer> mapTestCollision = new HashMapTest<>();
     mapTestCollision.put("00", 0);
-    mapTestCollision.put("22", 4);
+    mapTestCollision.put("22", 22);
     mapTestCollision.put("23", 5);
-    mapTestCollision.put("100", 10);
-    mapTestCollision.put("110", 11);
+    mapTestCollision.put("100001", 100001);
+    mapTestCollision.put("100", 100);
+    mapTestCollision.put("100", 111);
+    mapTestCollision.put("110", 110);
+    mapTestCollision.put("23", 23);
+    mapTestCollision.put("1001", 12);
+    mapTestCollision.put("1001", 15);
     System.out.println(mapTestCollision.get("00"));
     System.out.println(mapTestCollision.get("22"));
+    System.out.println(mapTestCollision.get("23"));
+    System.out.println(mapTestCollision.get("100001"));
+    System.out.println(mapTestCollision.get("100"));
     System.out.println(mapTestCollision.get("110"));
     System.out.println(mapTestCollision.get("23"));
-    System.out.println(mapTestCollision.get("100"));
+    System.out.println(mapTestCollision.get("1001"));
+    System.out.println(mapTestCollision.get("1001"));
     System.out.println("Line for Breakpoint");
   }
 
